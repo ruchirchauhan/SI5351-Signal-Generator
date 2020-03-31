@@ -1,8 +1,8 @@
-#Si5351 Frequency Synthesizer/Signal Generator
+# Si5351 Frequency Synthesizer/Signal Generator
 
 This arduino application uses Adafruit Si5351 breakout board to generate frequencies from 8 Khz - 160 Mhz
 
-#Hardware required:
+# Hardware required:
 1. Arduino Nano (or any arduino)
 2. Adafruit si5351 breakout board (or any other available)
 3. 128 x 64 OLED
