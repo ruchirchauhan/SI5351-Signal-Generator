@@ -343,6 +343,7 @@ eCMS ch_modify_handler(eRotEncEvent event) {
     } else if (ch==Ch2) {
       next_state = Ch2_Select_State;
     }
+    update_si5351_sel_ch();
     selected_channel = Ch_None;
     ch_mod_cursor = -1;
     break;
@@ -505,20 +506,32 @@ void update_si5351_all_ch() {
       Si.setPower(ch, SIOUT_8mA);
       Si.setFreq(ch, ch_freq[ch]);
       Si.enable(ch);
+      // Si.reset();
     }
   }
 }
 
 void update_si5351_sel_ch() {
-  Si.setPower(selected_channel, SIOUT_8mA);
-  Si.setFreq(selected_channel, ch_freq[selected_channel]);
-  Si.enable(selected_channel);
+  if (ch_unit[selected_channel] != Off) {
+    Si.setPower(selected_channel, SIOUT_8mA);
+    Si.setFreq(selected_channel, ch_freq[selected_channel]);
+    Si.enable(selected_channel);
+  } else {
+    ch_freq[selected_channel] = 0;
+    Si.disable(selected_channel);
   }
+  Si.reset(); //reset PLLs: not sure if we really need to do this, good explanation here: https://groups.io/g/BITX20/topic/si5351a_facts_and_myths/5430607
+}
 
 void update_si5351_ch(eChannel channel) {
-  Si.setPower(channel, SIOUT_8mA);
-  Si.setFreq(channel, ch_freq[channel]);
-  Si.enable(channel);
+  if (ch_unit[selected_channel] != Off) {
+    Si.setPower(channel, SIOUT_8mA);
+    Si.setFreq(channel, ch_freq[channel]);
+    Si.enable(channel);
+  } else {
+    ch_freq[channel] = 0;
+    Si.disable(channel);
+  }
 }
 /* SI5351 Update Functions End*/
 
